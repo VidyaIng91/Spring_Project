@@ -1,5 +1,6 @@
 package com.jdbc.dao;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,14 +9,17 @@ import java.sql.SQLException;
 import com.jdbc.model.Circle;
 
 public class JdbcDaoImpl {
+	
+	Connection conn =null;
 	Circle circle =null;
 	
 	public Circle getCircle(int circleID) {
-	String connString = "jdbc:derby://localhost:1527/db";
-	
-	String driver = "org.apache.derby.jdbc.ClientDriver";
+		
+	String connString = "jdbc:derby://localhost:1527/db"; //connection String
+	String driver = "org.apache.derby.jdbc.ClientDriver"; //Drivers
 	
 	try {
+		
 		Class.forName(driver).newInstance();
 		conn = DriverManager.getConnection(connString);
 		
@@ -27,6 +31,7 @@ public class JdbcDaoImpl {
 		{
 			circle = new Circle(circleID, rs.getString("name"));
 		}
+		conn.close();
 		return circle;
 		
 	}
@@ -44,5 +49,5 @@ public class JdbcDaoImpl {
 			e.printStackTrace();
 		}
 	}
-}
+}//End of method
 }
